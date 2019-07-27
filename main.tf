@@ -2,6 +2,13 @@ provider "aws" {
     region = "us-east-1"
 }
 
+terraform {
+    backend "s3" {
+        encrypt = "true"
+        acl     = "private"
+    }
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -21,10 +28,6 @@ data "aws_ami" "ubuntu" {
 variable "server_port" {
     description = "The port the server will use for HTTP requests"
     default     = 8080
-}
-
-output "elb_dns_name" {
-    value = "${aws_elb.example.dns_name}"
 }
 
 resource "aws_security_group" "elb" {
@@ -112,4 +115,8 @@ resource "aws_autoscaling_group" "example" {
         value               = "terraform-asg-example"
         propagate_at_launch = true
     }
+}
+
+output "elb_dns_name" {
+    value = "${aws_elb.example.dns_name}"
 }
