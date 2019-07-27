@@ -2,13 +2,6 @@ provider "aws" {
     region = "us-east-1"
 }
 
-terraform {
-    backend "s3" {
-        encrypt = "true"
-        acl     = "private"
-    }
-}
-
 data "aws_ami" "ubuntu" {
   most_recent = true
 
